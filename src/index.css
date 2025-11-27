@@ -1,0 +1,113 @@
+import zipfile
+import os
+
+# สร้างโฟลเดอร์โปรเจกต์
+project_dir = "/mnt/data/love-theme-animation"
+os.makedirs(project_dir, exist_ok=True)
+
+# สร้างไฟล์พื้นฐาน
+files = {
+    "index.html": """
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love Theme Animation</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>เรื่องราวของเรา 💖</h1>
+    <img src="1.jpg" alt="Memory 1" />
+    <p>จำวันแรกที่เจอกันได้มั้ย? 😊</p>
+    <img src="2.jpg" alt="Memory 2" />
+    <p>ทุกช่วงเวลาที่อยู่ด้วยกันคือของขวัญ 🎁</p>
+    <img src="3.jpg" alt="Memory 3" />
+    <p>และเราจะไปด้วยกันต่อไป... ตลอดไป 🥰</p>
+  </div>
+</body>
+</html>
+""",
+    "style.css": """
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Kanit', sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+  margin-bottom: 1rem;
+  animation: fadeInDown 1.5s ease-out;
+}
+
+.container {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.5);
+  max-width: 800px;
+}
+
+img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  margin-bottom: 1.5rem;
+  animation: fadeIn 2s ease-in-out;
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  padding: 0 1rem;
+  text-shadow: 0 0 5px #00ffff;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+""",
+    "README.md": readme_content
+}
+
+# สร้างไฟล์ในโฟลเดอร์
+for filename, content in files.items():
+    with open(os.path.join(project_dir, filename), "w", encoding="utf-8") as f:
+        f.write(content)
+
+# สร้าง ZIP ไฟล์
+zip_path = "/mnt/data/love-theme-animation.zip"
+with zipfile.ZipFile(zip_path, "w") as zipf:
+    for root, _, filenames in os.walk(project_dir):
+        for filename in filenames:
+            filepath = os.path.join(root, filename)
+            zipf.write(filepath, os.path.relpath(filepath, project_dir))
+
+zip_path
